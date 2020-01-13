@@ -1,0 +1,1 @@
+CREATE SCHEMA core_schema AUTHORIZATION liquibase_user;

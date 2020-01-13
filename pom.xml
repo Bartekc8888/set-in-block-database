@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.ciesielski.set-in-block</groupId>
+    <artifactId>database</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+    <name>database</name>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.9</version>
+        </dependency>
+    </dependencies>
+
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <database.changeLogFile>target/classes/changelog.xml</database.changeLogFile>
+                <database.driver>org.postgresql.Driver</database.driver>
+                <database.url>jdbc:postgresql://192.168.0.152:5432/setinblock</database.url>
+                <database.username>adminSIB</database.username>
+                <database.password>adminnimda</database.password>
+
+                <database.liquibase.username>liquibase_user</database.liquibase.username>
+                <database.liquibase.password>liquibase_password</database.liquibase.password>
+
+                <database.schema.liquibase>liquibase_schema</database.schema.liquibase>
+                <database.schema.main>core_schema</database.schema.main>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <defaultGoal>clean resources:resources liquibase:update</defaultGoal>
+        <resources>
+            <resource>
+                <directory>changelog</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.8.4</version>
+                <configuration>
+                    <changeLogFile>${database.changeLogFile}</changeLogFile>
+                    <driver>${database.driver}</driver>
+                    <url>${database.url}</url>
+                    <username>${database.liquibase.username}</username>
+                    <password>${database.liquibase.password}</password>
+                    <changelogSchemaName>${database.schema.liquibase}</changelogSchemaName>
+                    <defaultSchemaName>${database.schema.main}</defaultSchemaName>
+                    <outputDefaultSchema>true</outputDefaultSchema>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                    <verbose>true</verbose>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>update</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
