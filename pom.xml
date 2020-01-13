@@ -35,7 +35,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <database.changeLogFile>target/classes/changelog.xml</database.changeLogFile>
+                <database.changeLogFile>changelog.xml</database.changeLogFile>
                 <database.driver>org.postgresql.Driver</database.driver>
                 <database.url>jdbc:postgresql://192.168.0.152:5432/setinblock</database.url>
                 <database.username>adminSIB</database.username>
@@ -46,6 +46,8 @@
 
                 <database.schema.liquibase>liquibase_schema</database.schema.liquibase>
                 <database.schema.main>core_schema</database.schema.main>
+
+                <database.dropFirst>true</database.dropFirst>
             </properties>
         </profile>
     </profiles>
@@ -73,6 +75,7 @@
                     <changelogSchemaName>${database.schema.liquibase}</changelogSchemaName>
                     <defaultSchemaName>${database.schema.main}</defaultSchemaName>
                     <outputDefaultSchema>true</outputDefaultSchema>
+                    <dropFirst>${database.dropFirst}</dropFirst>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                     <verbose>true</verbose>
                 </configuration>

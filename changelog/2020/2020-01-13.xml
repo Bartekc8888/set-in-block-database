@@ -3,13 +3,58 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="createTable" author="bciesielski">
-        <createTable tableName="testTable" schemaName="${database.schema.main}">
+    <changeSet id="ct_auth_user_t" author="bciesielski">
+        <createTable tableName="auth_user_t" schemaName="${database.schema.main}">
             <column autoIncrement="true" name="id" type="bigint">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_id"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="id_pk"/>
             </column>
-            <column name="abc" type="varchar"/>
+            <column name="username" type="varchar">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar"/>
+            <column name="email" type="varchar"/>
+            <column name="created" type="datetime"/>
+            <column name="last_password_change" type="datetime"/>
+            <column name="enabled" type="boolean" defaultValue="true"/>
         </createTable>
+    </changeSet>
+
+    <changeSet id="at_auth_user_t" author="bciesielski">
+        <createIndex tableName="auth_user_t" indexName="username_index">
+            <column name="username"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="ct_auth_user_role_t" author="bciesielski">
+        <createTable tableName="auth_user_role_t" schemaName="${database.schema.main}">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_role_id_pk"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="user_id_fk" references="auth_user_t(id)"/>
+            </column>
+            <column name="user_role" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="id_auth_user_t" author="bciesielski">
+        <insert tableName="auth_user_t">
+            <column name="username" value="admin"/>
+            <column name="password" value="{noop}admin"/>
+            <column name="email" value="email@email.com"/>
+            <column name="created" value="now()"/>
+            <column name="last_password_change" value="now()"/>
+            <column name="enabled" value="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="id_auth_user_role_t" author="bciesielski">
+        <insert tableName="auth_user_role_t">
+            <column name="user_id" valueComputed="(SELECT id FROM ${database.schema.main}.auth_user_t WHERE username = 'admin')"/>
+            <column name="user_role" value="ADMIN"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
