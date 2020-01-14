@@ -55,6 +55,10 @@
             <column name="user_id" valueComputed="(SELECT id FROM ${database.schema.main}.auth_user_t WHERE username = 'admin')"/>
             <column name="user_role" value="ADMIN"/>
         </insert>
+        <insert tableName="auth_user_role_t">
+            <column name="user_id" valueComputed="(SELECT id FROM ${database.schema.main}.auth_user_t WHERE username = 'admin')"/>
+            <column name="user_role" value="USER"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
