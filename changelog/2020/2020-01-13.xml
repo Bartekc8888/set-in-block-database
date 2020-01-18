@@ -6,7 +6,7 @@
     <changeSet id="ct_auth_user_t" author="bciesielski">
         <createTable tableName="auth_user_t" schemaName="${database.schema.main}">
             <column autoIncrement="true" name="id" type="bigint">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="id_pk"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="auth_user_id_pk"/>
             </column>
             <column name="username" type="varchar">
                 <constraints nullable="false" unique="true"/>
@@ -20,7 +20,7 @@
     </changeSet>
 
     <changeSet id="at_auth_user_t" author="bciesielski">
-        <createIndex tableName="auth_user_t" indexName="username_index">
+        <createIndex tableName="auth_user_t" indexName="auth_user_username_index">
             <column name="username"/>
         </createIndex>
     </changeSet>
@@ -37,6 +37,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="at_auth_user_role_t" author="bciesielski">
+        <createIndex tableName="auth_user_role_t" indexName="user_role_user_id_index">
+            <column name="user_id"/>
+        </createIndex>
     </changeSet>
 
     <changeSet id="id_auth_user_t" author="bciesielski">

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="ct_fl_uploaded_file_t" author="bciesielski">
+        <createTable tableName="fl_uploaded_file_t" schemaName="${database.schema.main}">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="uploaded_file_id_pk"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="user_id_fk" references="auth_user_t(id)"/>
+            </column>
+            <column name="name" type="varchar"/>
+            <column name="type" type="varchar"/>
+            <column name="data" type="bytea"/>
+            <column name="created" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="at_fl_uploaded_file_t" author="bciesielski">
+        <createIndex tableName="fl_uploaded_file_t" indexName="uploaded_file_user_id_index">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
