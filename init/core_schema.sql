@@ -1,1 +1,2 @@
 CREATE SCHEMA core_schema AUTHORIZATION liquibase_user;
+CREATE SCHEMA blockchain_schema AUTHORIZATION liquibase_user;

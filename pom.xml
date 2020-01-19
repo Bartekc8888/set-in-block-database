@@ -44,6 +44,7 @@
                 <database.liquibase.username>liquibase_user</database.liquibase.username>
                 <database.liquibase.password>liquibase_password</database.liquibase.password>
 
+                <database.schema.blockchain>blockchain_schema</database.schema.blockchain>
                 <database.schema.liquibase>liquibase_schema</database.schema.liquibase>
                 <database.schema.main>core_schema</database.schema.main>
 
