@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="ct_bc_user_key_t" author="bciesielski">
+        <createTable tableName="bc_user_key_t" schemaName="${database.schema.main}">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_key_id_pk"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="user_id_fk" references="auth_user_t(id)"/>
+            </column>
+            <column name="public_key" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="encrypted_private_key" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ct_bc_transaction_file_t" author="bciesielski">
+        <createTable tableName="bc_transaction_file_t" schemaName="${database.schema.main}">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="transaction_file_id_pk"/>
+            </column>
+            <column name="uploaded_file_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="uploaded_file_id_fk" references="fl_uploaded_file_t(id)"/>
+            </column>
+            <column name="transaction_hash" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_hash" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_status" type="varchar"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="at_bc_transaction_file_t" author="bciesielski">
+        <createIndex tableName="bc_transaction_file_t" indexName="transaction_file_transaction_hash_index">
+            <column name="transaction_hash"/>
+        </createIndex>
+        <createIndex tableName="bc_transaction_file_t" indexName="transaction_file_transaction_status_index">
+            <column name="transaction_status"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="ct_bc_transaction_block_t" author="bciesielski">
+        <createTable tableName="bc_transaction_block_t" schemaName="${database.schema.main}">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="transaction_block_id_pk"/>
+            </column>
+            <column name="transaction_file_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="transaction_file_id_fk" references="bc_transaction_file_t(id)"/>
+            </column>
+            <column name="block_height" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="block_hash" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="at_bc_transaction_block_t" author="bciesielski">
+        <createIndex tableName="bc_transaction_block_t" indexName="transaction_file_block_hash_index">
+            <column name="block_hash"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
