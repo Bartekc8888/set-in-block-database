@@ -28,10 +28,10 @@
             <column name="uploaded_file_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="uploaded_file_id_fk" references="fl_uploaded_file_t(id)"/>
             </column>
-            <column name="transaction_hash" type="varchar">
+            <column name="transaction_hash" type="bytea">
                 <constraints nullable="false"/>
             </column>
-            <column name="file_hash" type="varchar">
+            <column name="file_hash" type="bytea">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="datetime">
@@ -58,10 +58,10 @@
             <column name="transaction_file_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="transaction_file_id_fk" references="bc_transaction_file_t(id)"/>
             </column>
-            <column name="block_height" type="varchar">
+            <column name="block_height" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="block_hash" type="varchar">
+            <column name="block_hash" type="bytea">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="datetime">
